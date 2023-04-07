@@ -13,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.jetpackcomposecatalogo.ui.theme.JetpackComposeCatalogoTheme
 
 class StateHoisting : ComponentActivity() {
