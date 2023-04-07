@@ -123,7 +123,6 @@ fun MyTextFieldOutlined() {
 
 }
 
-
 @Preview(name = "Ejemplos con el componente Text", showBackground = true, showSystemUi = true)
 @Composable
 fun MyPreviewText() {
