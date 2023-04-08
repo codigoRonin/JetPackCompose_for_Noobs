@@ -1,10 +1,8 @@
 package com.example.jetpackcomposecatalogo
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
@@ -12,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,7 +56,7 @@ fun MyIconExample() {
 
 @Preview(name = "Ejemplo del componente Image", showSystemUi = true, showBackground = true)
 @Composable
-fun MyPreviewExample1() {
+fun MyPreviewImage1() {
     MyImageExample()
 }
 
@@ -67,7 +64,7 @@ fun MyPreviewExample1() {
     name = "Ejemplo del componente Image Circulares", showSystemUi = true, showBackground = true
 )
 @Composable
-fun MyPreviewExample2() {
+fun MyPreviewImage2() {
     MyImageAdvanceExample()
 }
 
@@ -75,6 +72,6 @@ fun MyPreviewExample2() {
     name = "Ejemplo del componente Icon", showSystemUi = true, showBackground = true
 )
 @Composable
-fun MyPreviewExample3() {
+fun MyPreviewIcon1() {
     MyIconExample()
 }
