@@ -72,7 +72,7 @@ fun MyProgressBarAdvanceExample() {
     }
 
     Column(
-        Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
