@@ -32,6 +32,6 @@ class MainActivity : ComponentActivity() {
 //Nuevo kit para desarrollar vistas nativas desde Android
 //Problema xml -> entenderlo y transformalo -> tiempos de compilacion más largos
 //
-//Todo se programa en kotlin -> vista y logica ->  quita mucho código
+//Todas las cosas se programan en kotlin -> vista y logica ->  quita mucho código
 //
 //Pasamos de paradigma Imperativo cambia a declarativo
