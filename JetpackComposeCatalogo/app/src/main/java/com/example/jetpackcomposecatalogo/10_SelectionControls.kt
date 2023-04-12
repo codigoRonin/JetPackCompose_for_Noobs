@@ -36,12 +36,18 @@ class SelectionControls : ComponentActivity() {
                         onCheckedChange = { myNewStatus -> status = myNewStatus }
                     )
 
-                    val myOptions = getOptions(listOf("Opcion 1", "Opcion 2", "Opcion 3") )
+                    val myOptions = getOptions(listOf("Opcion 1", "Opcion 2", "Opcion 3"))
+
+
+                    var selected by rememberSaveable { mutableStateOf("Hombre") }
 
                     Column {
                         MyCheckBoxWithText()
                         MyCheckBoxWithTextCompleted(checkInfo = checkInfo)
+                        MyTriStateCheckBox()
                         myOptions.forEach { MyCheckBoxWithTextCompleted(checkInfo = it) }
+                        MyRadioButtonList()
+                        MyRadioButtonListStateHoisting(selected) { selected = it }
                     }
                 }
             }
@@ -115,15 +121,16 @@ fun MyCheckBoxWithTextCompleted(checkInfo: CheckInfo) {
         Text(text = checkInfo.title)
     }
 }
+
 // Creamos una función que va a recibir un listado de nombres y devolverá un listadp
 // de Checkinfo con esos nombres.
 @Composable
-fun getOptions(titles: List<String>): List<CheckInfo>{
+fun getOptions(titles: List<String>): List<CheckInfo> {
 
     return titles.map {
         var status by rememberSaveable { mutableStateOf(false) }
         CheckInfo(
-            title =it,
+            title = it,
             selected = status,
             // onCheckedChange = {status = it}
             onCheckedChange = { myNewStatus -> status = myNewStatus }
@@ -132,23 +139,93 @@ fun getOptions(titles: List<String>): List<CheckInfo>{
 }
 
 @Composable
-fun MyTriStateCheckBox(){
+fun MyTriStateCheckBox() {
     var status by rememberSaveable { mutableStateOf(ToggleableState.Off) }
     TriStateCheckbox(state = status, onClick = {
-        when(status){
-            ToggleableState.On -> TODO()
-            ToggleableState.Off -> TODO()
-            ToggleableState.Indeterminate -> TODO()
+        status = when (status) {
+            ToggleableState.On -> {
+                ToggleableState.Off
+                //Podriamos hacer mas acciones como por ejemplo activar hijos, borrar algo, ...
+            }
+            ToggleableState.Off -> ToggleableState.Indeterminate
+            ToggleableState.Indeterminate -> ToggleableState.On
         }
     })
 
 
 }
+
+@Composable
+fun MyRadioButtonExample() {
+    Row() {
+        RadioButton(
+            selected = false, onClick = {}, enabled = true, colors = RadioButtonDefaults.colors(
+                selectedColor = Color.Red,
+                unselectedColor = Color.Green,
+                disabledColor = Color.Blue
+            )
+        )
+
+        Text("Ejemplo de radio")
+    }
+}
+
+
+@Composable
+fun MyRadioButtonList() {
+
+    var selected by rememberSaveable { mutableStateOf("Hombre") }
+
+    Column(Modifier.fillMaxWidth()) {
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(selected = selected == "Hombre", onClick = { selected = "Hombre" })
+            Text("Hombre")
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(selected = selected == "Mujer", onClick = { selected = "Mujer" })
+            Text("Mujer")
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(selected = selected == "No Binario", onClick = { selected = "No Binario" })
+            Text("No Binario")
+        }
+
+    }
+}
+@Composable
+fun MyRadioButtonListStateHoisting(name: String, onItemSelected: (String) -> Unit) {
+
+    Column(Modifier.fillMaxWidth()) {
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(selected = name == "Hombre", onClick = { onItemSelected("Hombre") })
+            Text("Hombre")
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(selected = name == "Mujer", onClick = { onItemSelected("Mujer") })
+            Text("Mujer")
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(selected = name == "No Binario", onClick = { onItemSelected("No Binario") })
+            Text("No Binario")
+        }
+
+    }
+}
+
+@Preview(name = "Ejemplo de RadioButton", showBackground = true, showSystemUi = true)
+@Composable
+fun MyPreviewRadioButton() {
+    MyRadioButtonExample()
+}
+
 @Preview(name = "Ejemplo de CheckBob Tristate", showBackground = true, showSystemUi = true)
 @Composable
 fun MyPreviewTriSate() {
     MyTriStateCheckBox()
 }
+
 @Preview(name = "Ejemplo de Checkbox con texto", showBackground = true, showSystemUi = true)
 @Composable
 fun MyPreviewCheckBox2() {
