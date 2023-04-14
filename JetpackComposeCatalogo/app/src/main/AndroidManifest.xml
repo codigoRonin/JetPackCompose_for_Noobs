@@ -15,9 +15,7 @@
             android:name=".SelectionControls"
             android:exported="true"
             android:label="@string/title_activity_selection_controls"
-            android:theme="@style/Theme.JetpackComposeCatalogo" >
-
-        </activity>
+            android:theme="@style/Theme.JetpackComposeCatalogo"></activity>
         <activity
             android:name=".StateHoisting"
             android:exported="true"

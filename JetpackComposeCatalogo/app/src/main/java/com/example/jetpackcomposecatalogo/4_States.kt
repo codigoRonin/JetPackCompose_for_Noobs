@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 // enganchamos de algun modo y cuando se mofiquen automaticamente se actualizaran nuestas vistas.
 
 // Recomposición:
-// Cuando un texto se modifica el componente no se actualiza se recompone,se vuele a crear de nuevo.
-// La ventaja que siempre vamos a tener la ultima version y evitaremos fallos de la UI-
+// Cuando un texto se modifica el componente no se actualiza se recompone, se vuele a crear de nuevo.
+// La ventaja que siempre vamos a tener la ultima versión y evitaremos fallos de la UI
 
 @Composable
 fun MyStateExample1() {
