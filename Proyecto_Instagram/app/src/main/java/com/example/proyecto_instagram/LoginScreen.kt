@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -39,8 +40,9 @@ fun LoginScreen() {
 fun Body(modifier: Modifier) {
     var userName by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+    var loginEnabled by rememberSaveable { mutableStateOf(false) }
     Column(modifier = modifier) {
-        Logo()
+        Logo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
         UserName(userName) { userName = it }
         Spacer(modifier = Modifier.size(4.dp))
@@ -49,8 +51,23 @@ fun Body(modifier: Modifier) {
         // Tenemos que pasarle el modificador del padre directo por eso
         // creamos una instacia nueva de Modifier
         ForgotPassword(Modifier.align(Alignment.End))
+        Spacer(modifier = Modifier.size(16.dp))
+        LoginButton(loginEnabled)
     }
 }
+
+@Composable
+fun LoginButton(loginEnabled: Boolean) {
+
+    Button(
+        onClick = { /*TODO*/ }, enabled = loginEnabled,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(text = "Log In")
+    }
+
+}
+
 
 @Composable
 fun ForgotPassword(modifier: Modifier) {
@@ -66,18 +83,22 @@ fun ForgotPassword(modifier: Modifier) {
 
 @Composable
 fun PassWord(password: String, onTextChange: (String) -> Unit) {
-    TextField(value = password, onValueChange = { onTextChange(it) })
+    TextField(value = password, onValueChange = { onTextChange(it) }, modifier = Modifier.fillMaxWidth())
 }
 
 @Composable
 fun UserName(userName: String, onTextChange: (String) -> Unit) {
-    TextField(value = userName, onValueChange = { onTextChange(it) })
+    TextField(value = userName, onValueChange = { onTextChange(it) }, modifier = Modifier.fillMaxWidth())
 
 }
 
 @Composable
-fun Logo() {
-    Image(painter = painterResource(id = R.drawable.insta), contentDescription = "Logo Instagram")
+fun Logo(modifier: Modifier) {
+    Image(
+        painter = painterResource(id = R.drawable.insta),
+        contentDescription = "Logo Instagram",
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -86,8 +107,7 @@ fun Logo() {
 fun Header(modifier: Modifier) {
     // Vamos a coger el contexto para convertirlo a Activity y asi poder llamar a finish
     val activiy = LocalContext.current as Activity
-    Icon(
-        imageVector = Icons.Default.Close,
+    Icon(imageVector = Icons.Default.Close,
         contentDescription = "close",
         modifier = modifier.clickable { activiy.finish() })
 }
