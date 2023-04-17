@@ -2,12 +2,10 @@ package com.example.proyecto_instagram
 
 import android.app.Activity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
@@ -33,7 +31,39 @@ fun LoginScreen() {
     ) {
         Header(Modifier.align(Alignment.TopEnd))
         Body(Modifier.align(Alignment.Center))
+        Footer(Modifier.align(Alignment.BottomCenter))
     }
+}
+
+@Composable
+fun Footer(modifier: Modifier) {
+    Column(modifier = modifier.fillMaxWidth()) {
+
+        Divider(
+            Modifier
+                .background(Color(0xFFF9F9F9))
+                .height(1.dp)
+                .fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.size(24.dp))
+        SignUp()
+        Spacer(modifier = Modifier.size(24.dp))
+
+    }
+}
+
+@Composable
+fun SignUp() {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        Text("Don't have an account", fontSize = 12.sp, color = Color(0xFFB5B5B5))
+        Text(
+            "Sign up.",
+            fontSize = 12.sp,
+            modifier = Modifier.padding(horizontal = 8.dp),
+            color = Color(0xFF4EA8E9), fontWeight = FontWeight.Bold
+        )
+    }
+
 }
 
 @Composable
@@ -53,6 +83,59 @@ fun Body(modifier: Modifier) {
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.size(16.dp))
         LoginButton(loginEnabled)
+        Spacer(modifier = Modifier.size(16.dp))
+        LoginDivider()
+        Spacer(modifier = Modifier.size(32.dp))
+        LoginSocial()
+    }
+}
+
+@Composable
+fun LoginSocial() {
+
+    Row(
+        Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.fb),
+            contentDescription = "Social Login Facebook", Modifier.size(24.dp)
+        )
+        Text(
+            text = "Continue as Michel",
+            fontWeight = FontWeight.Bold,
+            fontSize = 14.sp,
+            color = Color(0xFF4EA8E9),
+            modifier = Modifier.padding(horizontal = 8.dp)
+        )
+    }
+
+}
+
+@Composable
+fun LoginDivider() {
+
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Divider(
+            Modifier
+                .background(Color(0xFFF9F9F9))
+                .weight(1f)
+                .height(1.dp)
+        )
+        Text(
+            text = "OR",
+            Modifier.padding(horizontal = 18.dp),
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFFB5B5B5)
+        )
+        Divider(
+            Modifier
+                .background(Color(0xFFF9F9F9))
+                .weight(1f)
+                .height(1.dp)
+        )
     }
 }
 
@@ -83,12 +166,20 @@ fun ForgotPassword(modifier: Modifier) {
 
 @Composable
 fun PassWord(password: String, onTextChange: (String) -> Unit) {
-    TextField(value = password, onValueChange = { onTextChange(it) }, modifier = Modifier.fillMaxWidth())
+    TextField(
+        value = password,
+        onValueChange = { onTextChange(it) },
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Composable
 fun UserName(userName: String, onTextChange: (String) -> Unit) {
-    TextField(value = userName, onValueChange = { onTextChange(it) }, modifier = Modifier.fillMaxWidth())
+    TextField(
+        value = userName,
+        onValueChange = { onTextChange(it) },
+        modifier = Modifier.fillMaxWidth()
+    )
 
 }
 
