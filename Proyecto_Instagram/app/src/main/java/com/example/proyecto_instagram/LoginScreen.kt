@@ -49,7 +49,7 @@ fun Body(modifier: Modifier) {
         PassWord(password) { password = it }
         Spacer(modifier = Modifier.size(8.dp))
         // Tenemos que pasarle el modificador del padre directo por eso
-        // creamos una instacia nueva de Modifier
+        // creamos una instancia nueva de Modifier
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.size(16.dp))
         LoginButton(loginEnabled)
