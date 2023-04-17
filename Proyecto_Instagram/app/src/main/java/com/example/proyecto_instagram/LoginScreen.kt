@@ -1,6 +1,8 @@
 package com.example.proyecto_instagram
 
 import android.app.Activity
+import android.media.MediaCodec.CryptoInfo.Pattern
+import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -76,19 +78,25 @@ fun SignUp() {
 fun Body(modifier: Modifier) {
     var userName by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
-    var loginEnabled by rememberSaveable { mutableStateOf(false) }
+    var isLoginEnabled by rememberSaveable { mutableStateOf(false) }
     Column(modifier = modifier) {
         Logo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        UserName(userName) { userName = it }
+        UserName(userName) {
+            userName = it
+            isLoginEnabled = enableLogin(userName, password)
+        }
         Spacer(modifier = Modifier.size(4.dp))
-        PassWord(password) { password = it }
+        PassWord(password) {
+            password = it
+            isLoginEnabled = enableLogin(userName, password)
+        }
         Spacer(modifier = Modifier.size(8.dp))
         // Tenemos que pasarle el modificador del padre directo por eso
         // creamos una instancia nueva de Modifier
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.size(16.dp))
-        LoginButton(loginEnabled)
+        LoginButton(isLoginEnabled)
         Spacer(modifier = Modifier.size(16.dp))
         LoginDivider()
         Spacer(modifier = Modifier.size(32.dp))
@@ -146,16 +154,30 @@ fun LoginDivider() {
 }
 
 @Composable
-fun LoginButton(loginEnabled: Boolean) {
+fun LoginButton(isLoginEnabled: Boolean) {
 
     Button(
-        onClick = { /*TODO*/ }, enabled = loginEnabled,
-        modifier = Modifier.fillMaxWidth()
+        onClick = { /*TODO*/ },
+        enabled = isLoginEnabled,
+        modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(0xFF4EA8E9),
+            contentColor = Color.White,
+            disabledBackgroundColor = Color(0xFF78C8F9),
+            disabledContentColor = Color.White
+        )
     ) {
         Text(text = "Log In")
     }
 
 }
+
+fun enableLogin(email: String, password: String): Boolean =
+    Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length >= 8
+
+/*  Equivalente a:
+    fun enableLogin(email: String, password: String): Boolean {
+    return Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length == 8
+}*/
 
 
 @Composable
@@ -180,6 +202,7 @@ fun PassWord(password: String, onTextChange: (String) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Password") }, // El hint
         singleLine = true,
+        maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFB2B2B2),
@@ -187,9 +210,22 @@ fun PassWord(password: String, onTextChange: (String) -> Unit) {
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),
-
+        trailingIcon = {
+            val imagen = if (passwordVisibility) {
+                Icons.Filled.Visibility
+            } else {
+                Icons.Filled.VisibilityOff
+            }
+            IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                Icon(imageVector = imagen, contentDescription = "Show password")
+            }
+        },
+        visualTransformation = if (passwordVisibility) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation()
+        }
     )
-
 }
 
 @Composable
@@ -200,6 +236,7 @@ fun UserName(userName: String, onTextChange: (String) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Email") }, // El hint
         singleLine = true,
+        maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFB2B2B2),
