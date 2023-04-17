@@ -5,9 +5,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -166,11 +172,24 @@ fun ForgotPassword(modifier: Modifier) {
 
 @Composable
 fun PassWord(password: String, onTextChange: (String) -> Unit) {
+    var passwordVisibility by rememberSaveable { mutableStateOf(false) }
+
     TextField(
         value = password,
         onValueChange = { onTextChange(it) },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        placeholder = { Text(text = "Password") }, // El hint
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color(0xFFB2B2B2),
+            backgroundColor = Color(0xFFFAFAFA),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent
+        ),
+
     )
+
 }
 
 @Composable
@@ -178,9 +197,17 @@ fun UserName(userName: String, onTextChange: (String) -> Unit) {
     TextField(
         value = userName,
         onValueChange = { onTextChange(it) },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        placeholder = { Text(text = "Email") }, // El hint
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color(0xFFB2B2B2),
+            backgroundColor = Color(0xFFFAFAFA),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent
+        )
     )
-
 }
 
 @Composable
