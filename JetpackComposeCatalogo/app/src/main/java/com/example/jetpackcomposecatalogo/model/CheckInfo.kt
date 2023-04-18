@@ -1,4 +1,4 @@
-package com.example.jetpackcomposecatalogo
+package com.example.jetpackcomposecatalogo.model
 
 data class CheckInfo(
     val title: String,
