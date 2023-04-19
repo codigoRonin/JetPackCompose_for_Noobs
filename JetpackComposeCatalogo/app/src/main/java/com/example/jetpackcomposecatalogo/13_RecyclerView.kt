@@ -1,9 +1,7 @@
 package com.example.jetpackcomposecatalogo
 
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -16,21 +14,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.material.contentColorFor
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetpackcomposecatalogo.model.SuperHero
+import kotlinx.coroutines.launch
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
@@ -199,6 +196,7 @@ fun SuperHeroGridView() {
 fun SuperHeroSpecialControlView() {
     val context = LocalContext.current
     val rvState = rememberLazyListState()
+    val coroutinesScope = rememberCoroutineScope()
 
     Column {
         LazyColumn(
@@ -213,17 +211,53 @@ fun SuperHeroSpecialControlView() {
         }
         val showButton by remember {
             derivedStateOf {
-                rvState.firstVisibleItemIndex > 0
+                rvState.firstVisibleItemIndex > 1
             }
         }
-        if(showButton){
-            Button(onClick = { /*TODO*/ }, Modifier.align(Alignment.CenterHorizontally).padding(8.dp)) {
+        if (showButton) {
+            Button(
+                onClick = {
+                    coroutinesScope.launch {
+                        rvState.animateScrollToItem(0)
+                    }
+                },
+                Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(8.dp)
+            ) {
                 Text(text = "Soy un Boton Fijo")
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun SuperHeroVerticalStickylView() {
+    val context = LocalContext.current
+    val superHero: Map<String, List<SuperHero>> = getSuperHeroes().groupBy { it.publisher }
+
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) { // Espacio entre los items
+        superHero.forEach { (publisher, mySuperHero) ->
+            stickyHeader {
+                Text(
+                    text = publisher,
+                    Modifier
+                        .fillMaxWidth()
+                        .background(Color.Black).padding(8.dp),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.White
+                )
+            }
+            items(mySuperHero) {
+                ItemSuperHeroClicable(superHero = it) {
+                    Toast.makeText(context, it.superHeroName, Toast.LENGTH_LONG).show()
+                }
             }
         }
 
     }
-
 
 }
 
@@ -235,5 +269,6 @@ fun MyRecyclerPreview() {
     // SuperHeroHorizontalView()
     // SuperHeroVerticallView()
     // SuperHeroGridView()
-    SuperHeroSpecialControlView()
+    // SuperHeroSpecialControlView()
+    SuperHeroVerticalStickylView()
 }
