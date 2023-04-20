@@ -3,4 +3,5 @@
     <string name="title_activity_state_hoisting">StateHoisting</string>
     <string name="title_activity_selection_controls">SelectionControls</string>
     <string name="title_activity_dialogs">Dialogs</string>
+    <string name="title_activity_screen">ScreenActivity</string>
 </resources>

@@ -12,10 +12,15 @@
         android:theme="@style/Theme.JetpackComposeCatalogo"
         tools:targetApi="31">
         <activity
+            android:name=".ScreenActivity"
+            android:exported="true"
+            android:label="@string/title_activity_screen"
+            android:theme="@style/Theme.JetpackComposeCatalogo" />
+        <activity
             android:name=".SelectionControls"
             android:exported="true"
             android:label="@string/title_activity_selection_controls"
-            android:theme="@style/Theme.JetpackComposeCatalogo"></activity>
+            android:theme="@style/Theme.JetpackComposeCatalogo" />
         <activity
             android:name=".StateHoisting"
             android:exported="true"
@@ -28,6 +33,7 @@
             android:theme="@style/Theme.JetpackComposeCatalogo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
