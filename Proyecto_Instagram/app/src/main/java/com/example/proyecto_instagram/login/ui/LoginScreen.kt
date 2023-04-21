@@ -1,7 +1,6 @@
-package com.example.proyecto_instagram
+package com.example.proyecto_instagram.login.ui
 
 import android.app.Activity
-import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,7 +28,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.proyecto_instagram.login.LoginViewModel
+import com.example.proyecto_instagram.R
 
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel) {

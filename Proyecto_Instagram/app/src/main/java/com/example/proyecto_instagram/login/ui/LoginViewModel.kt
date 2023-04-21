@@ -1,4 +1,4 @@
-package com.example.proyecto_instagram.login
+package com.example.proyecto_instagram.login.ui
 
 import android.util.Patterns
 import androidx.lifecycle.LiveData
