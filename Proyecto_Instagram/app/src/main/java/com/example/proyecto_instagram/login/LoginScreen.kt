@@ -1,7 +1,6 @@
 package com.example.proyecto_instagram
 
 import android.app.Activity
-import android.media.MediaCodec.CryptoInfo.Pattern
 import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +14,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -29,16 +29,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyecto_instagram.login.LoginViewModel
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(loginViewModel: LoginViewModel) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
         Header(Modifier.align(Alignment.TopEnd))
-        Body(Modifier.align(Alignment.Center))
+        Body(Modifier.align(Alignment.Center), loginViewModel)
         Footer(Modifier.align(Alignment.BottomCenter))
     }
 }
@@ -75,28 +76,27 @@ fun SignUp() {
 }
 
 @Composable
-fun Body(modifier: Modifier) {
-    var userName by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    var isLoginEnabled by rememberSaveable { mutableStateOf(false) }
+fun Body(modifier: Modifier, loginViewModel: LoginViewModel) {
+    val email:String  by loginViewModel.email.observeAsState(initial = "")
+    val password:String by loginViewModel.password.observeAsState(initial = "")
+    val isLoginEnable:Boolean by loginViewModel.isLoginEnable.observeAsState(initial = false)
+
     Column(modifier = modifier) {
         Logo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        UserName(userName) {
-            userName = it
-            isLoginEnabled = enableLogin(userName, password)
+        UserName(email) {
+            loginViewModel.onLoginChanged(it, password)
         }
         Spacer(modifier = Modifier.size(4.dp))
         PassWord(password) {
-            password = it
-            isLoginEnabled = enableLogin(userName, password)
+           loginViewModel.onLoginChanged(email, it)
         }
         Spacer(modifier = Modifier.size(8.dp))
         // Tenemos que pasarle el modificador del padre directo por eso
         // creamos una instancia nueva de Modifier
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.size(16.dp))
-        LoginButton(isLoginEnabled)
+        LoginButton(isLoginEnable)
         Spacer(modifier = Modifier.size(16.dp))
         LoginDivider()
         Spacer(modifier = Modifier.size(32.dp))
@@ -171,8 +171,7 @@ fun LoginButton(isLoginEnabled: Boolean) {
 
 }
 
-fun enableLogin(email: String, password: String): Boolean =
-    Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length >= 8
+
 
 /*  Equivalente a:
     fun enableLogin(email: String, password: String): Boolean {
@@ -229,9 +228,9 @@ fun PassWord(password: String, onTextChange: (String) -> Unit) {
 }
 
 @Composable
-fun UserName(userName: String, onTextChange: (String) -> Unit) {
+fun UserName(email: String, onTextChange: (String) -> Unit) {
     TextField(
-        value = userName,
+        value = email,
         onValueChange = { onTextChange(it) },
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Email") }, // El hint
