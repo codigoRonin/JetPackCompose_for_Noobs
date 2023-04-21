@@ -6,10 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.proyecto_instagram.login.ui.LoginViewModel
+import com.example.proyecto_instagram.login.ui.LoginScreen
 import com.example.proyecto_instagram.ui.theme.Proyecto_InstagramTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                   LoginScreen()
+                   LoginScreen(loginViewModel= LoginViewModel())
                 }
             }
         }
