@@ -32,14 +32,21 @@ import com.example.proyecto_instagram.R
 
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel) {
+    val isLoaded by loginViewModel.isLoaded.observeAsState(initial = false)
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        Header(Modifier.align(Alignment.TopEnd))
-        Body(Modifier.align(Alignment.Center), loginViewModel)
-        Footer(Modifier.align(Alignment.BottomCenter))
+        if(isLoaded){
+            Box(modifier = Modifier.fillMaxSize(), Alignment.Center ){CircularProgressIndicator()}
+
+        }
+        else {
+            Header(Modifier.align(Alignment.TopEnd))
+            Body(Modifier.align(Alignment.Center), loginViewModel)
+            Footer(Modifier.align(Alignment.BottomCenter))
+        }
     }
 }
 
@@ -76,6 +83,7 @@ fun SignUp() {
 
 @Composable
 fun Body(modifier: Modifier, loginViewModel: LoginViewModel) {
+
     val email:String  by loginViewModel.email.observeAsState(initial = "")
     val password:String by loginViewModel.password.observeAsState(initial = "")
     val isLoginEnable:Boolean by loginViewModel.isLoginEnable.observeAsState(initial = false)
@@ -95,7 +103,7 @@ fun Body(modifier: Modifier, loginViewModel: LoginViewModel) {
         // creamos una instancia nueva de Modifier
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.size(16.dp))
-        LoginButton(isLoginEnable)
+        LoginButton(isLoginEnable, loginViewModel)
         Spacer(modifier = Modifier.size(16.dp))
         LoginDivider()
         Spacer(modifier = Modifier.size(32.dp))
@@ -153,10 +161,10 @@ fun LoginDivider() {
 }
 
 @Composable
-fun LoginButton(isLoginEnabled: Boolean) {
+fun LoginButton(isLoginEnabled: Boolean, loginViewModel: LoginViewModel) {
 
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { loginViewModel.onLoginSelected() },
         enabled = isLoginEnabled,
         modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
             backgroundColor = Color(0xFF4EA8E9),
