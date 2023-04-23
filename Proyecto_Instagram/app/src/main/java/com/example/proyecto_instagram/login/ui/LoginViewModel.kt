@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyecto_instagram.login.domain.LoginUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
@@ -44,6 +45,7 @@ class LoginViewModel : ViewModel() {
                 //Navegar a la siguiente pantalla
                 Log.i("Michel", "result OK")
             }
+            delay(3000)
             _isLoaded.value = false
         }
     }
