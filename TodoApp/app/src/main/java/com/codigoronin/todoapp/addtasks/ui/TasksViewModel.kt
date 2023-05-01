@@ -4,16 +4,33 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.codigoronin.todoapp.addtasks.domain.AddTaskUseCase
+import com.codigoronin.todoapp.addtasks.domain.GetTasksUseCase
+import com.codigoronin.todoapp.addtasks.ui.TasksUiState.Success
 import com.codigoronin.todoapp.addtasks.ui.model.TaskModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TasksViewModel @Inject constructor() : ViewModel() {
+class TasksViewModel @Inject constructor(
+    private val addTaskUseCase: AddTaskUseCase,
+    getTasksUseCase: GetTasksUseCase
+) : ViewModel() {
 
+    val uiState: StateFlow<TasksUiState> = getTasksUseCase().map ( ::Success )
+        .catch {TasksUiState.Error(it)}
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),TasksUiState.Loading)
 
     private val _showDialog = MutableLiveData<Boolean>()
     val showDialog: LiveData<Boolean> = _showDialog
 
-    // Como los LiveData no funcionan del bien con los listados y mas los que se tiene que actulizar
+    // Como los LiveData no funcionan bien con los listados y mas los que se tienen que actualizar
     // Se podria usar Flows o un mutablestatelist
 
     private val _tasks = mutableStateListOf<TaskModel>()
@@ -26,6 +43,10 @@ class TasksViewModel @Inject constructor() : ViewModel() {
     fun onTaskAdd(task: String) {
         _tasks.add(TaskModel(task = task))
         _showDialog.value = false
+
+        viewModelScope.launch {
+            addTaskUseCase(TaskModel(task = task))
+        }
     }
 
     fun onShowDialogClick() {
