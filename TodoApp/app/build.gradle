@@ -1,5 +1,4 @@
-plugins {
-    id 'com.android.application'
+plugins {    id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     // Plugin Dagger Hilt
     id 'kotlin-kapt'
@@ -36,8 +35,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        compose true
+    buildFeatures {        compose true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.2.0'
@@ -71,5 +69,10 @@ dependencies {
     // Dependencias Dagger Hilt
     implementation "com.google.dagger:hilt-android:2.42"
     kapt "com.google.dagger:hilt-android-compiler:2.42"
+
+    // Room
+    implementation 'androidx.room:room-runtime:2.5.1'
+    kapt "androidx.room:room-compiler:2.5.1"
+    implementation 'androidx.room:room-ktx:2.5.1'
 
 }
